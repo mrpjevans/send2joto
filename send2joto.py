@@ -54,8 +54,8 @@ def sendLine(line):
     while True:
 
         # Clean the line and don't bother if empty
-        line = str.rstrip(line)
-        if line == '':
+        line = str.strip(line)
+        if line == '' or line[0] == ';':
             return True
 
         # Send line
