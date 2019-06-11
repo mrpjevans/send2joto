@@ -49,8 +49,6 @@ ser.open()
 
 def sendLine(line):
 
-    # Sometimes we need to resend a command if Joto is busy
-    resend = 5
     while True:
 
         # Clean the line and don't bother if empty
@@ -65,6 +63,7 @@ def sendLine(line):
         # Check response
         response = ""
         timeout = 50
+
         while response == "":
             time.sleep(0.2)
             while ser.inWaiting() > 0:
@@ -73,6 +72,10 @@ def sendLine(line):
             if timeout == 0:
                 print("Timeout waiting for Joto's response")
                 return False
+            if response.strip() == "busy:processing":
+                print("Waiting")
+                time.sleep(1)
+                response = ""
 
         # Validate response
         gotOk = False
@@ -81,13 +84,6 @@ def sendLine(line):
             print(">> " + responseLine)
             if responseLine == 'ok 0':
                 gotOk = True
-            elif responseLine == 'busy:processing':
-                resend -= 1
-                if resend < 0:
-                    print("Tried 5 times, stopping")
-                    return False
-                print('Resending in 1 second')
-                time.sleep(1)
 
         if gotOk:
             break
