@@ -24,7 +24,7 @@ import argparse
 parser = argparse.ArgumentParser(description='Send Gcode to a Joto')
 parser.add_argument('-p', '--port', type=str, required=True,
                     help='Path to the USB serial connection')
-parser.add_argument('-f', '--file', type=str, required=True,
+parser.add_argument('-f', '--file', type=str, default="",
                     help='Gcode file to process')
 args = parser.parse_args()
 
@@ -36,15 +36,6 @@ ser = serial.Serial(
     stopbits=serial.STOPBITS_ONE,
     bytesize=serial.EIGHTBITS
 )
-
-# Check the file to send
-if os.path.isfile(args.file) is False:
-    print('File not found')
-    sys.exit()
-
-# Cycle the port
-ser.close()
-ser.open()
 
 
 def sendLine(line):
@@ -91,13 +82,28 @@ def sendLine(line):
     return True
 
 
-# Open the file and read each line
-f = open(args.file, "r")
-for line in f:
-    if sendLine(line) is False:
-        break
+# Check the file to send
+if args.file != and os.path.isfile(args.file) is False:
+    print('File not found')
+    sys.exit(1)
+
+# Cycle the port
+ser.close()
+ser.open()
+
+
+# Open the file or stdin and read each line
+if args.file != "":
+    f = open(args.file, "r")
+    for line in f:
+        if sendLine(line) is False:
+            break
+    f.close()
+else:
+    for line in sys.stdin:
+        if sendLine(line) is False:
+            break
 
 # Tidy up
-f.close()
 ser.close()
 sys.exit()
