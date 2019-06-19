@@ -38,7 +38,7 @@ ser = serial.Serial(
 )
 
 
-def sendLine(line):
+def send_line(line):
 
     while True:
 
@@ -53,7 +53,7 @@ def sendLine(line):
 
         # Check response
         response = ""
-        timeout = 50
+        timeout = 100
 
         while response == "":
             time.sleep(0.2)
@@ -83,7 +83,7 @@ def sendLine(line):
 
 
 # Check the file to send
-if args.file != and os.path.isfile(args.file) is False:
+if args.file != "" and os.path.isfile(args.file) is False:
     print('File not found')
     sys.exit(1)
 
@@ -96,12 +96,12 @@ ser.open()
 if args.file != "":
     f = open(args.file, "r")
     for line in f:
-        if sendLine(line) is False:
+        if send_line(line) is False:
             break
     f.close()
 else:
     for line in sys.stdin:
-        if sendLine(line) is False:
+        if send_line(line) is False:
             break
 
 # Tidy up

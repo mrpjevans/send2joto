@@ -13,7 +13,6 @@ G1 Y5
 G28 Y0
 G90
 G4 P1000
-M106 S235 ; Moves Joto's pen to position 140 to place the nib back into the dock
+M106 S{{pen_dock}} ; Moves Joto's pen to position 140 to place the nib back into the dock
 G4 P1000
-M106 S0
 M84 ; Turns Joto's motors off. 

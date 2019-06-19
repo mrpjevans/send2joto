@@ -77,7 +77,7 @@ if args.gcode:
 # Calculate and move to start position
 x_offset = 0
 y_offset = y_boundary - (100 * font_size)
-print('G1 %.2f %.2f' % (x_offset, y_offset))
+print('G1 X%.2f Y%.2f' % (x_offset, y_offset))
 
 # For each character
 for character in text:
