@@ -57,9 +57,9 @@ def read_to_array(file_name):
     out = []
     f = open(file_name, "r")
     for line in f:
-        line = line.replace("{{pen_up}}", pen_up)
-        line = line.replace("{{pen_down}}", pen_down)
-        line = line.replace("{{pen_dock}}", pen_dock)
+        line = line.replace("{{pen_up}}", str(pen_up))
+        line = line.replace("{{pen_down}}", str(pen_down))
+        line = line.replace("{{pen_dock}}", str(pen_dock))
         out.append(line.rstrip())
 
     return out
@@ -78,13 +78,13 @@ x_boundary = 280
 y_boundary = 300
 
 # Character patterns
-f = open("default_font.json", "r")
+f = open(my_dir + "/default_font.json", "r")
 font = json.load(f)
 
 # Header and footer
 if args.gcode:
-    start_code = read_to_array("start.gcode")
-    end_code = read_to_array("end.gcode")
+    start_gcode = read_to_array(my_dir + "/start.gcode")
+    end_gcode = read_to_array(my_dir + "/end.gcode")
 
 # Header
 if args.gcode:
